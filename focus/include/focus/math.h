@@ -3,11 +3,13 @@
 
 #include <stdint.h>
 
-#define FOCUS_PI      3.141592654f
-#define FOCUS_2PI     6.283185307f
-#define FOCUS_HALF_PI 1.570796327f
-#define FOCUS_INV_2PI 0.159154943f
-#define FOCUS_SQRT3   1.732050808f
+#define FOCUS_PI         3.141592654f
+#define FOCUS_2PI        6.283185307f
+#define FOCUS_HALF_PI    1.570796327f
+#define FOCUS_INV_2PI    0.159154943f
+#define FOCUS_SQRT3      1.732050808f
+#define FOCUS_SQRT3_DIV2 0.866025404f
+#define FOCUS_SQRT3_DIV3 0.577350269f
 
 typedef struct {
     float *samples;

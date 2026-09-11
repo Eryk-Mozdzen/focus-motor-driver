@@ -1187,9 +1187,11 @@ static void running_execute(void *user) {
 #ifdef FOCUS_CONFIG_SENSORLESS_ENABLE
 static bool running_low_velocity(const void *user) {
     const focus_core_t *core = user;
+    const float now = focus_port_timebase(core->user);
     const float omega_e = FOCUS_SMO_GET_ELECTRICAL_VELOCITY(&core->sensorless.smo);
     const float omega_m = omega_e / FOCUS_CONFIG_MOTOR_POLE_PAIRS_NUM;
-    return (fabs(omega_m) < FOCUS_CONFIG_SENSORLESS_VELOCITY_MINIMAL);
+    return ((fabs(omega_m) < FOCUS_CONFIG_SENSORLESS_VELOCITY_MINIMAL) &&
+            ((now - core->current_state_enter_time) > FOCUS_CONFIG_SENSORLESS_VELOCITY_TIME));
 }
 #endif
 

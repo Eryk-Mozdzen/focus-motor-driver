@@ -43,7 +43,7 @@ float focus_math_sign(const float in) {
 
 void focus_math_clark_transform(const float i_uvw[3], float i_ab[2]) {
     i_ab[0] = i_uvw[0];
-    i_ab[1] = (0.577350269f * i_uvw[0]) + (1.154700538f * i_uvw[1]);
+    i_ab[1] = (FOCUS_SQRT3_DIV3 * i_uvw[0]) + (2.f * FOCUS_SQRT3_DIV3 * i_uvw[1]);
 }
 
 void focus_math_park_transform(const float i_ab[2], const float theta, float i_dq[2]) {
@@ -64,8 +64,8 @@ void focus_math_inverse_park_transform(const float u_dq[2], const float theta, f
 
 void focus_math_inverse_clark_transform(const float u_ab[2], float u_uvw[3]) {
     u_uvw[0] = u_ab[0];
-    u_uvw[1] = -(0.5f * u_ab[0]) + (0.866025404f * u_ab[1]);
-    u_uvw[2] = -(0.5f * u_ab[0]) - (0.866025404f * u_ab[1]);
+    u_uvw[1] = -(0.5f * u_ab[0]) + (FOCUS_SQRT3_DIV2 * u_ab[1]);
+    u_uvw[2] = -(0.5f * u_ab[0]) - (FOCUS_SQRT3_DIV2 * u_ab[1]);
 }
 
 void focus_math_svpwm(const float u_ab[2], float u_supply, float duty_cycle_uvw[3]) {
@@ -89,43 +89,43 @@ void focus_math_svpwm(const float u_ab[2], float u_supply, float duty_cycle_uvw[
 
     switch(sector) {
         case 1: {
-            const float t1 = (u_alpha - (0.577350269f * u_beta));
-            const float t2 = (1.154700538f * u_beta);
+            const float t1 = (1.5f * u_alpha) - (FOCUS_SQRT3_DIV2 * u_beta);
+            const float t2 = (FOCUS_SQRT3 * u_beta);
             duty_cycle_uvw[0] = 0.5f * (1.f + t1 + t2);
             duty_cycle_uvw[1] = duty_cycle_uvw[0] - t1;
             duty_cycle_uvw[2] = duty_cycle_uvw[1] - t2;
         } break;
         case 2: {
-            const float t1 = (u_alpha + (0.577350269f * u_beta));
-            const float t2 = (-u_alpha + (0.577350269f * u_beta));
+            const float t1 = (+1.5f * u_alpha) + (FOCUS_SQRT3_DIV2 * u_beta);
+            const float t2 = (-1.5f * u_alpha) + (FOCUS_SQRT3_DIV2 * u_beta);
             duty_cycle_uvw[1] = 0.5f * (1.f + t1 + t2);
             duty_cycle_uvw[0] = duty_cycle_uvw[1] - t2;
             duty_cycle_uvw[2] = duty_cycle_uvw[0] - t1;
         } break;
         case 3: {
-            const float t1 = (1.154700538f * u_beta);
-            const float t2 = (-u_alpha - (0.577350269f * u_beta));
+            const float t1 = (FOCUS_SQRT3 * u_beta);
+            const float t2 = (-1.5f * u_alpha) - (FOCUS_SQRT3_DIV2 * u_beta);
             duty_cycle_uvw[1] = 0.5f * (1.f + t1 + t2);
             duty_cycle_uvw[2] = duty_cycle_uvw[1] - t1;
             duty_cycle_uvw[0] = duty_cycle_uvw[2] - t2;
         } break;
         case 4: {
-            const float t1 = (-u_alpha + (0.577350269f * u_beta));
-            const float t2 = (-1.154700538f * u_beta);
+            const float t1 = (-1.5f * u_alpha) + (FOCUS_SQRT3_DIV2 * u_beta);
+            const float t2 = (-FOCUS_SQRT3 * u_beta);
             duty_cycle_uvw[2] = 0.5f * (1.f + t1 + t2);
             duty_cycle_uvw[1] = duty_cycle_uvw[2] - t2;
             duty_cycle_uvw[0] = duty_cycle_uvw[1] - t1;
         } break;
         case 5: {
-            const float t1 = (-u_alpha - (0.577350269f * u_beta));
-            const float t2 = (u_alpha - (0.577350269f * u_beta));
+            const float t1 = (-1.5f * u_alpha) - (FOCUS_SQRT3_DIV2 * u_beta);
+            const float t2 = (+1.5f * u_alpha) - (FOCUS_SQRT3_DIV2 * u_beta);
             duty_cycle_uvw[2] = 0.5f * (1.f + t1 + t2);
             duty_cycle_uvw[0] = duty_cycle_uvw[2] - t1;
             duty_cycle_uvw[1] = duty_cycle_uvw[0] - t2;
         } break;
         case 6: {
-            const float t1 = (-1.154700538f * u_beta);
-            const float t2 = (u_alpha + (0.577350269f * u_beta));
+            const float t1 = (-FOCUS_SQRT3 * u_beta);
+            const float t2 = (1.5f * u_alpha) + (FOCUS_SQRT3_DIV2 * u_beta);
             duty_cycle_uvw[0] = 0.5f * (1.f + t1 + t2);
             duty_cycle_uvw[2] = duty_cycle_uvw[0] - t2;
             duty_cycle_uvw[1] = duty_cycle_uvw[2] - t1;
